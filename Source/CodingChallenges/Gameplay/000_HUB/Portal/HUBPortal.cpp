@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "CodingChallenges/Framework/CCUtils.h"
 #include "CodingChallenges/Framework/FadeManager.h"
+#include "Engine/LevelStreaming.h"
 
 AHUBPortal::AHUBPortal()
 {
@@ -37,11 +38,17 @@ void AHUBPortal::OnConstruction(const FTransform& Transform)
 
 	Trigger->OnComponentBeginOverlap.RemoveAll(this);
 	Trigger->OnComponentBeginOverlap.AddUniqueDynamic(this, &AHUBPortal::OnOverlap);
-
+	 
 	if(!Level.IsNull())
 	{
+		TArray<FString> strArray;
 		FString name = UBlueprintPathsLibrary::GetBaseFilename(Level.ToString());
-		LevelName->SetText(FText::FromString(name));
+		name.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+		name.ParseIntoArray(strArray, TEXT("_"));
+		strArray.RemoveAt(0);
+
+		FString result = FString::Join(strArray, TEXT(" "));
+		LevelName->SetText(FText::FromString(result));
 	}
 }
 
