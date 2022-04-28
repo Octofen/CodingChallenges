@@ -39,13 +39,7 @@ void AMengerSpongeFractal::BeginPlay()
 	float roll = FMath::RandRange(-0.1f, 0.1f);
 	randomRotation = FRotator(pitch, yaw, roll) * Data->RotationSpeed;
 
-	FActorSpawnParameters param;
-	param.Owner = this;
-	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	AMengerSpongeFractalBox* box = GetWorld()->SpawnActor<AMengerSpongeFractalBox>(Data->BoxClass.Get(), FTransform(), param);
-	box->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-	Sponge.Add(box);
+	Refresh();
 }
 
 void AMengerSpongeFractal::Tick(float DeltaSeconds)
@@ -56,6 +50,15 @@ void AMengerSpongeFractal::Tick(float DeltaSeconds)
 
 void AMengerSpongeFractal::Generate()
 {
+	CurrentIteration++;
+
+	if(CurrentIteration >= 4)
+	{
+		CurrentIteration = 0;
+		Refresh();
+		return;
+	}
+
 	TArray<AMengerSpongeFractalBox*> next;
 
 	for(AMengerSpongeFractalBox* box : Sponge)
@@ -67,4 +70,22 @@ void AMengerSpongeFractal::Generate()
 
 	Sponge = next;
 
+}
+
+void AMengerSpongeFractal::Refresh()
+{
+	for(AMengerSpongeFractalBox* box : Sponge)
+	{
+		box->Destroy();
+	}
+
+	Sponge.Empty();
+
+	FActorSpawnParameters param;
+	param.Owner = this;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AMengerSpongeFractalBox* box = GetWorld()->SpawnActor<AMengerSpongeFractalBox>(Data->BoxClass.Get(), FTransform(), param);
+	box->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+	Sponge.Add(box);
 }

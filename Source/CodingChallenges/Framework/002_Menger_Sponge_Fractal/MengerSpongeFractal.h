@@ -25,6 +25,7 @@ protected:
 	TArray<AMengerSpongeFractalBox*> Sponge;
 
 	FRotator randomRotation;
+	int CurrentIteration = 0;
 
 public:
 	AMengerSpongeFractal();
@@ -36,4 +37,7 @@ public:
 	void Tick(float DeltaSeconds) override;
 
 	void Generate();
+
+protected:
+	void Refresh();
 };
