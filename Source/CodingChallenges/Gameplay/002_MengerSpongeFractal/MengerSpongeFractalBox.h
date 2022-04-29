@@ -3,20 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "MengerSpongeFractalBox.generated.h"
 
-UCLASS()
-class CODINGCHALLENGES_API AMengerSpongeFractalBox : public AActor
+USTRUCT()
+struct FMengerSpongeFractalBox
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, meta = (Hidden))
-	UStaticMeshComponent* Box;
+	FVector Position;
+	float Size;
+	float BoundsSize;
 
-public:	
-	AMengerSpongeFractalBox();
+public:
+	FMengerSpongeFractalBox() { }
 
-	TArray<AMengerSpongeFractalBox*> Generate(AActor* owner);
+	FMengerSpongeFractalBox(float x, float y, float z, float size, float boundsSize);
+
+	FTransform Show();
+
+	TArray<TSharedPtr<FMengerSpongeFractalBox>> Generate();
 };

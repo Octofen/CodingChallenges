@@ -64,7 +64,7 @@ void AStarfieldManager::Tick(float DeltaSeconds)
 
 	float speed = FMath::GetMappedRangeValueClamped(FVector2D(0.f, (float) viewportX), FVector2D(Data->MinStarSpeed, Data->MaxStarSpeed), mousePositionX);
 
-	for(const TSharedPtr<FStarfieldStar>& star : Stars)
+	for(TSharedPtr<FStarfieldStar> star : Stars)
 	{
 		star->Update(speed);
 		FTransform t = star->Show();

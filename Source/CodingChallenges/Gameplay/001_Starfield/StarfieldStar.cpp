@@ -9,9 +9,9 @@ FStarfieldStar::FStarfieldStar(float halfWidth, float halfHeight, float minSize,
 	this->HalfWidth = halfWidth;
 	this->HalfHeight = halfHeight;
 
-	this->X = FMath::RandRange(-HalfWidth, HalfWidth);
-	this->Y = FMath::RandRange(-HalfHeight, HalfHeight);
-	this->Z = FMath::RandRange(0.f, HalfWidth);
+	X = FMath::RandRange(-HalfWidth, HalfWidth);
+	Y = FMath::RandRange(-HalfHeight, HalfHeight);
+	Z = FMath::RandRange(0.f, HalfWidth);
 
 	this->MinSize = minSize;
 	this->MaxSize = maxSize;
@@ -20,13 +20,13 @@ FStarfieldStar::FStarfieldStar(float halfWidth, float halfHeight, float minSize,
 
 void FStarfieldStar::Update(float speed)
 {
-	this->Z -= speed;
+	Z -= speed;
 
 	if(Z < 1.f)
 	{
-		this->X = FMath::RandRange(-HalfWidth, HalfWidth);
-		this->Y = FMath::RandRange(-HalfHeight, HalfHeight);
-		this->Z = HalfWidth;
+		X = FMath::RandRange(-HalfWidth, HalfWidth);
+		Y = FMath::RandRange(-HalfHeight, HalfHeight);
+		Z = HalfWidth;
 	}
 }
 

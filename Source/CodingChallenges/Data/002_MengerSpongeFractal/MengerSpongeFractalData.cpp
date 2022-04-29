@@ -2,5 +2,4 @@
 
 
 #include "MengerSpongeFractalData.h"
-#include "CodingChallenges/Gameplay/002_MengerSpongeFractal/MengerSpongeFractalBox.h"
 

@@ -4,7 +4,6 @@
 #include "MengerSpongeFractalPawn.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "MengerSpongeFractal.h"
 
 AMengerSpongeFractalPawn::AMengerSpongeFractalPawn()
 {
@@ -25,8 +24,5 @@ void AMengerSpongeFractalPawn::SetupPlayerInputComponent(UInputComponent* Player
 
 void AMengerSpongeFractalPawn::OnGenerate()
 {
-	if(AMengerSpongeFractal* gameMode = Cast<AMengerSpongeFractal>(GetWorld()->GetAuthGameMode()))
-	{
-		gameMode->Generate();
-	}
+	GenerateEvent.Broadcast();
 }

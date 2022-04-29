@@ -3,22 +3,22 @@
 
 #include "MengerSpongeFractalBox.h"
 
-AMengerSpongeFractalBox::AMengerSpongeFractalBox()
+FMengerSpongeFractalBox::FMengerSpongeFractalBox(float x, float y, float z, float size, float boundsSize)
 {
-	PrimaryActorTick.bCanEverTick = false;
-
-	Box = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Box"));
-	RootComponent = Box;
+	Position = FVector(x, y, z);
+	this->BoundsSize = boundsSize;
+	this->Size = size;
 }
 
-TArray<AMengerSpongeFractalBox*> AMengerSpongeFractalBox::Generate(AActor* owner)
+FTransform FMengerSpongeFractalBox::Show()
 {
-	TArray<AMengerSpongeFractalBox*> boxes;
+	return FTransform(FRotator::ZeroRotator, Position, FVector(Size / BoundsSize));
+}
 
-	FVector min;
-	FVector max;
-	Box->GetLocalBounds(min, max);
-	float offset = ((max.X * 2) / 3) * GetActorScale3D().X;
+TArray<TSharedPtr<FMengerSpongeFractalBox>> FMengerSpongeFractalBox::Generate()
+{
+	TArray<TSharedPtr<FMengerSpongeFractalBox>> boxes;
+	float newSize = Size / 3;
 
 	for(int x = -1; x < 2; x++)
 	{
@@ -33,19 +33,11 @@ TArray<AMengerSpongeFractalBox*> AMengerSpongeFractalBox::Generate(AActor* owner
 					continue;
 				}
 
-				FActorSpawnParameters param;
-				param.Owner = owner;
-				param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				float posX = Position.X + x * newSize;
+				float posY = Position.Y + y * newSize;
+				float posZ = Position.Z + z * newSize;
+				TSharedPtr<FMengerSpongeFractalBox> box(new FMengerSpongeFractalBox(posX, posY, posZ, newSize, BoundsSize));
 
-				float posX = RootComponent->GetRelativeLocation().X + x * offset;
-				float posY = RootComponent->GetRelativeLocation().Y + y * offset;
-				float posZ = RootComponent->GetRelativeLocation().Z + z * offset;
-				FVector position = FVector(posX, posY, posZ);
-				FVector scale = GetActorScale3D() / 3;
-				FTransform spawnTransform = FTransform(FRotator::ZeroRotator, position, scale);
-
-				AMengerSpongeFractalBox* box = GetWorld()->SpawnActor<AMengerSpongeFractalBox>(GetClass(), spawnTransform, param);
-				box->AttachToActor(owner, FAttachmentTransformRules::KeepRelativeTransform);
 				boxes.Add(box);
 			}
 		}

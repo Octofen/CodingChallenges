@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "MengerSpongeFractalPawn.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMengerSpongeFractalPawnEvent);
+
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -13,6 +15,9 @@ UCLASS()
 class CODINGCHALLENGES_API AMengerSpongeFractalPawn : public APawn
 {
 	GENERATED_BODY()
+
+public:
+	FMengerSpongeFractalPawnEvent GenerateEvent;
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
