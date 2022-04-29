@@ -5,6 +5,8 @@
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CodingChallenges/Framework/MainPlayerController.h"
+#include "CodingChallenges/Data/003_Snake/SnakeData.h"
+#include "CodingChallenges/Framework/CCUtils.h"
 
 ASnakePawn::ASnakePawn()
 {
@@ -21,6 +23,17 @@ void ASnakePawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if(DataSoft.IsPending())
+	{
+		DataSoft.LoadSynchronous();
+	}
+
+	Data = DataSoft.Get();
+
+	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
+	HalfWidth = viewport.X * 0.5f;
+	HalfHeight = viewport.Y * 0.5f;
+
 	APlayerController* playerController = GetWorld()->GetFirstPlayerController();
 
 	if(AMainPlayerController* mainPlayerController = Cast<AMainPlayerController>(playerController))
@@ -29,8 +42,9 @@ void ASnakePawn::BeginPlay()
 		mainPlayerController->DoOnceAxisRightEvent.AddUniqueDynamic(this, &ASnakePawn::OnMoveRight);
 	}
 
-	X = 0.f;
-	Y = 0.f;
+	
+	X = FMath::RoundToFloat(-HalfWidth);
+	Y = FMath::RoundToFloat(HalfHeight);
 	XSpeed = 1.f;
 	YSpeed = 0.f;
 
@@ -42,20 +56,29 @@ void ASnakePawn::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	Update();
-	Show();
+	ElapsedTime += DeltaSeconds * Data->GameSpeed;
+
+	if(ElapsedTime >= 1.f)
+	{
+		ElapsedTime = 0.f;
+		Update();
+		Show();
+	}
 }
 
 void ASnakePawn::Update()
 {
-	X += XSpeed;
-	Y += YSpeed;
+	X += XSpeed * Data->TileSize;
+	Y += YSpeed * Data->TileSize;
+
+	X = FMath::Clamp(X, -HalfWidth, HalfWidth - Data->TileSize);
+	Y = FMath::Clamp(Y, -HalfHeight + Data->TileSize, HalfHeight);
 }
 
 void ASnakePawn::Show()
 {
-	FVector location = FVector(0.f, X, Y);
-	FVector scale = FVector(0.1f);
+	FVector location = FVector(0.f, X + Data->TileSize * 0.5f, Y - Data->TileSize * 0.5f);
+	FVector scale = FVector(Data->TileSize * 0.01f);
 	FTransform t = FTransform(FRotator::ZeroRotator, location, scale);
 
 	InstancedStaticMesh->UpdateInstanceTransform(0, t, false, true);

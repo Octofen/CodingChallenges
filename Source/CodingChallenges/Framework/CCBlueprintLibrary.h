@@ -23,4 +23,7 @@ public:
 
 	UFUNCTION(BlueprintPure, meta = (CompactNodeTitle = "Abs %"))
 	static int AbsoluteModulo(int value, int modulo);
+
+	UFUNCTION(BlueprintPure, meta = (WorldContext = "worldContext"))
+	static FVector2D GetCameraViewportSize(UObject* worldContext);
 };

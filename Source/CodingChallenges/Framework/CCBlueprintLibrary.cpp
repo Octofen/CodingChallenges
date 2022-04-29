@@ -20,3 +20,9 @@ int UCCBlueprintLibrary::AbsoluteModulo(int value, int modulo)
 {
 	return UCCUtils::AbsoluteModulo(value, modulo);
 }
+
+FVector2D UCCBlueprintLibrary::GetCameraViewportSize(UObject* worldContext)
+{
+	UWorld* world = GEngine->GetWorldFromContextObject(worldContext, EGetWorldErrorMode::ReturnNull);
+	return UCCUtils::GetCameraViewportSize(world);
+}

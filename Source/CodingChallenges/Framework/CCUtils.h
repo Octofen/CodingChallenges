@@ -20,4 +20,6 @@ public:
 	static UFadeManager* GetFadeManager();
 
 	static int AbsoluteModulo(int value, int modulo);
+
+	static FVector2D GetCameraViewportSize(UWorld* world);
 };

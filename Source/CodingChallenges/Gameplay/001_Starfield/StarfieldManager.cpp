@@ -4,8 +4,7 @@
 #include "StarfieldManager.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "CodingChallenges/Data/001_Starfield/StarfieldData.h"
-#include "Camera/CameraComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
+#include "CodingChallenges/Framework/CCUtils.h"
 
 AStarfieldManager::AStarfieldManager()
 {
@@ -26,25 +25,16 @@ void AStarfieldManager::BeginPlay()
 
 	Data = DataSoft.Get();
 
-	APlayerController* playerController = GetWorld()->GetFirstPlayerController();
-	AActor* viewTarget = playerController->GetViewTarget();
-	UActorComponent* component = viewTarget->GetComponentByClass(UCameraComponent::StaticClass());
+	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
+	float halfWidth = viewport.X * 0.5f;
+	float halfHeight = viewport.Y * 0.5f;
 
-	if(UCameraComponent* camera = Cast<UCameraComponent>(component))
+	for(int i = 0; i < Data->NbStars; i++)
 	{
-		FMinimalViewInfo view;
-		camera->GetCameraView(0.f, view);
+		int index = InstancedStaticMesh->AddInstance(FTransform(), true);
 
-		float halfWidth = view.OrthoWidth * 0.5f;
-		float halfHeight = halfWidth / view.AspectRatio;
-
-		for(int i = 0; i < Data->NbStars; i++)
-		{
-			int index = InstancedStaticMesh->AddInstance(FTransform(), true);
-
-			TSharedPtr<FStarfieldStar> star(new FStarfieldStar(halfWidth, halfHeight, Data->MinStarSize, Data->MaxStarSize, index));
-			Stars.Add(star);
-		}
+		TSharedPtr<FStarfieldStar> star(new FStarfieldStar(halfWidth, halfHeight, Data->MinStarSize, Data->MaxStarSize, index));
+		Stars.Add(star);
 	}
 }
 

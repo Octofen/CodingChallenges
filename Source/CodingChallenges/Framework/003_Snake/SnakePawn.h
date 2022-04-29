@@ -8,6 +8,7 @@
 
 class UInstancedStaticMeshComponent;
 class UCameraComponent;
+class USnakeData;
 
 UCLASS()
 class CODINGCHALLENGES_API ASnakePawn : public APawn
@@ -21,10 +22,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UCameraComponent* Camera;
 
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	TSoftObjectPtr<USnakeData> DataSoft;
+
+	UPROPERTY()
+	USnakeData* Data;
+
 	float X;
 	float Y;
 	float XSpeed;
 	float YSpeed;
+
+	float HalfWidth;
+	float HalfHeight;
+
+	float ElapsedTime = 0.f;
 
 public:
 	ASnakePawn();
