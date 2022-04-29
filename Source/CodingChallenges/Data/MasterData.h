@@ -23,12 +23,12 @@ public:
 
 	// The input will allow the navigation in the menu only above that value
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Pause")
-	float MenuNavigationDeadZone = 0.3f;
+	float AxisDeadZone = 0.3f;
 
 	// After a successfull menu navigation
 	// The input will allow another navigation in the menu only if it's reset bellow that value
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Pause")
-	float MenuNavigationResetValue = 0.1f;
+	float AxisResetValue = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Fade")
 	TSoftClassPtr<UFadeManager> FadeManagerClass;

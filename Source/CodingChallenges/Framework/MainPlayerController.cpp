@@ -20,6 +20,8 @@ void AMainPlayerController::BeginPlay()
 	{
 		SetInputModeGameAndUI();
 	}
+
+	DoOnceAxisUpEvent.AddUniqueDynamic(this, &AMainPlayerController::OnMenuUp);
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -30,9 +32,13 @@ void AMainPlayerController::SetupInputComponent()
 	pauseBinding.bExecuteWhenPaused = true;
 	pauseBinding.bConsumeInput = false;
 
-	FInputAxisBinding& menuUpBinding = InputComponent->BindAxis("Menu Up / Down", this, &AMainPlayerController::OnMenuUp);
-	menuUpBinding.bExecuteWhenPaused = true;
-	menuUpBinding.bConsumeInput = false;
+	FInputAxisBinding& axisUpBinding = InputComponent->BindAxis("Menu Up / Down", this, &AMainPlayerController::OnAxisUp);
+	axisUpBinding.bExecuteWhenPaused = true;
+	axisUpBinding.bConsumeInput = false;
+
+	FInputAxisBinding& axisRightBinding = InputComponent->BindAxis("Menu Right / Left", this, &AMainPlayerController::OnAxisRight);
+	axisRightBinding.bExecuteWhenPaused = true;
+	axisRightBinding.bConsumeInput = false;
 
 	FInputActionBinding& menuValidateBinding = InputComponent->BindAction("Menu Validate", IE_Pressed, this, &AMainPlayerController::OnMenuValidate);
 	menuValidateBinding.bExecuteWhenPaused = true;
@@ -116,7 +122,6 @@ void AMainPlayerController::OnPause()
 
 			SetInputModeGameAndUI(PauseMenu, EMouseLockMode::DoNotLock);
 			ChangeMouseCursorVisibility(true);
-			bMenuInputsActive = true;
 		}
 	}
 }
@@ -128,23 +133,45 @@ void AMainPlayerController::OnPauseMenuClassLoaded(UMasterData* masterData)
 	OnPause();
 }
 
+void AMainPlayerController::OnAxisUp(float value)
+{
+	UMasterData* masterData = UCCUtils::GetMasterData();
+	float abs = FMath::Abs(value);
+
+	if(!bAxisUpInputsActive && abs < masterData->AxisResetValue)
+	{
+		bAxisUpInputsActive = true;
+	}
+
+	if(bAxisUpInputsActive && abs >= masterData->AxisDeadZone)
+	{
+		bAxisUpInputsActive = false;
+		DoOnceAxisUpEvent.Broadcast(value);
+	}
+}
+
+void AMainPlayerController::OnAxisRight(float value)
+{
+	UMasterData* masterData = UCCUtils::GetMasterData();
+	float abs = FMath::Abs(value);
+
+	if(!bAxisRightInputsActive && abs < masterData->AxisResetValue)
+	{
+		bAxisRightInputsActive = true;
+	}
+
+	if(bAxisRightInputsActive && abs >= masterData->AxisDeadZone)
+	{
+		bAxisRightInputsActive = false;
+		DoOnceAxisRightEvent.Broadcast(value);
+	}
+}
+
 void AMainPlayerController::OnMenuUp(float value)
 {
 	if (UGameplayStatics::IsGamePaused(GetWorld()) && IsValid(PauseMenu))
 	{
-		UMasterData* masterData = UCCUtils::GetMasterData();
-		float abs = FMath::Abs(value);
-
-		if (!bMenuInputsActive && abs < masterData->MenuNavigationResetValue)
-		{
-			bMenuInputsActive = true;
-		}
-
-		if (bMenuInputsActive && abs >= masterData->MenuNavigationDeadZone)
-		{
-			bMenuInputsActive = false;
-			PauseMenu->MenuNavvigation(value);
-		}
+		PauseMenu->MenuNavvigation(value);
 	}
 }
 

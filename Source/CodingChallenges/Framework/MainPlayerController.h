@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "MainPlayerController.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMainControllerAxisEvent, float, value);
+
 class UPauseMenu;
 class UMasterData;
 
@@ -14,6 +16,10 @@ class CODINGCHALLENGES_API AMainPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	FMainControllerAxisEvent DoOnceAxisUpEvent;
+	FMainControllerAxisEvent DoOnceAxisRightEvent;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
 	bool bMouseCursorAlwaysVisible = false;
@@ -22,7 +28,8 @@ protected:
 	UPauseMenu* PauseMenu;
 
 	bool bPauseMenuClassLoading = false;
-	bool bMenuInputsActive = true;
+	bool bAxisUpInputsActive = true;
+	bool bAxisRightInputsActive = true;
 
 public:
 	void BeginPlay() override;
@@ -40,6 +47,12 @@ protected:
 	void OnPause();
 
 	void OnPauseMenuClassLoaded(UMasterData* masterData);
+
+	UFUNCTION()
+	void OnAxisUp(float value);
+
+	UFUNCTION()
+	void OnAxisRight(float value);
 
 	UFUNCTION()
 	void OnMenuUp(float value);
