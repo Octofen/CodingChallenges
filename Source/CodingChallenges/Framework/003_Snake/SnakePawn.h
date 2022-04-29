@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CodingChallenges/Framework/MainGameMode.h"
-#include "HUB.generated.h"
+#include "GameFramework/Pawn.h"
+#include "SnakePawn.generated.h"
 
 UCLASS()
-class CODINGCHALLENGES_API AHUB : public AMainGameMode
+class CODINGCHALLENGES_API ASnakePawn : public APawn
 {
 	GENERATED_BODY()
-	
+
+public:
+	ASnakePawn();
 };

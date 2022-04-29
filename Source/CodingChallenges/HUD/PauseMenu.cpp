@@ -3,7 +3,6 @@
 
 #include "PauseMenu.h"
 #include "Kismet/GameplayStatics.h"
-#include "CodingChallenges/Framework/000_HUB/HUB.h"
 #include "CodingChallenges/Framework/CCUtils.h"
 #include "CodingChallenges/Data/MasterData.h"
 #include "CodingChallenges/Framework/FadeManager.h"
@@ -46,9 +45,9 @@ void UPauseMenu::Resume()
 void UPauseMenu::Quit()
 {
 	UWorld* world = GetWorld();
-	APlayerController* playerController = UGameplayStatics::GetPlayerController(world, 0);
+	APlayerController* playerController = world->GetFirstPlayerController();
 
-	if (UGameplayStatics::GetGameMode(world)->IsA(AHUB::StaticClass()))
+	if (world->GetMapName().Contains("000_HUB"))
 	{
 		UKismetSystemLibrary::QuitGame(world, playerController, EQuitPreference::Quit, false);
 	}

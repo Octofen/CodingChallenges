@@ -2,5 +2,4 @@
 
 
 #include "StarfieldData.h"
-#include "CodingChallenges/Gameplay/001_Starfield/Star/Star.h"
 

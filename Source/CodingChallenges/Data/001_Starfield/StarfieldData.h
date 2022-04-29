@@ -6,17 +6,12 @@
 #include "Engine/DataAsset.h"
 #include "StarfieldData.generated.h"
 
-class AStar;
-
 UCLASS()
 class CODINGCHALLENGES_API UStarfieldData : public UDataAsset
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
-	TSoftClassPtr<AStar> StarClass;
-
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
 	int NbStars = 100;
 
