@@ -2,37 +2,22 @@
 
 
 #include "SnakePawn.h"
-#include "Components/InstancedStaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CodingChallenges/Framework/MainPlayerController.h"
-#include "CodingChallenges/Data/003_Snake/SnakeData.h"
-#include "CodingChallenges/Framework/CCUtils.h"
 
 ASnakePawn::ASnakePawn()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
-	InstancedStaticMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Snake Parts"));
-	RootComponent = InstancedStaticMesh;
+	PrimaryActorTick.bCanEverTick = false;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
 }
 
-void ASnakePawn::BeginPlay()
+void ASnakePawn::Initialize(float halfWidth, float halfHeight, float tileSize)
 {
-	Super::BeginPlay();
-
-	if(DataSoft.IsPending())
-	{
-		DataSoft.LoadSynchronous();
-	}
-
-	Data = DataSoft.Get();
-
-	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
-	HalfWidth = viewport.X * 0.5f;
-	HalfHeight = viewport.Y * 0.5f;
+	this->HalfWidth = halfWidth;
+	this->HalfHeight = halfHeight;
+	this->TileSize = tileSize;
 
 	APlayerController* playerController = GetWorld()->GetFirstPlayerController();
 
@@ -42,52 +27,34 @@ void ASnakePawn::BeginPlay()
 		mainPlayerController->DoOnceAxisRightEvent.AddUniqueDynamic(this, &ASnakePawn::OnMoveRight);
 	}
 
-	
-	X = FMath::RoundToFloat(-HalfWidth);
-	Y = FMath::RoundToFloat(HalfHeight);
-	XSpeed = 1.f;
-	YSpeed = 0.f;
-
-	InstancedStaticMesh->AddInstance(FTransform());
-	Show();
-}
-
-void ASnakePawn::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	ElapsedTime += DeltaSeconds * Data->GameSpeed;
-
-	if(ElapsedTime >= 1.f)
-	{
-		ElapsedTime = 0.f;
-		Update();
-		Show();
-	}
+	float x = FMath::RoundToFloat(-HalfWidth);
+	float y = FMath::RoundToFloat(HalfHeight);
+	Position = FVector2D(x, y);
+	Speed = FVector2D(1.f, 0.f);
 }
 
 void ASnakePawn::Update()
 {
-	X += XSpeed * Data->TileSize;
-	Y += YSpeed * Data->TileSize;
+	Position.X += Speed.X * TileSize;
+	Position.Y += Speed.Y * TileSize;
 
-	X = FMath::Clamp(X, -HalfWidth, HalfWidth - Data->TileSize);
-	Y = FMath::Clamp(Y, -HalfHeight + Data->TileSize, HalfHeight);
+	Position.X = FMath::Clamp(Position.X, -HalfWidth, HalfWidth - TileSize);
+	Position.Y = FMath::Clamp(Position.Y, -HalfHeight + TileSize, HalfHeight);
 }
 
-void ASnakePawn::Show()
+FTransform ASnakePawn::Show()
 {
-	FVector location = FVector(0.f, X + Data->TileSize * 0.5f, Y - Data->TileSize * 0.5f);
-	FVector scale = FVector(Data->TileSize * 0.01f);
-	FTransform t = FTransform(FRotator::ZeroRotator, location, scale);
+	float newX = Position.X;
+	float newY = Position.Y;
+	FVector newPos = FVector(0.f, newX, newY);
+	FVector newScale = FVector(TileSize * 0.01f);
 
-	InstancedStaticMesh->UpdateInstanceTransform(0, t, false, true);
+	return FTransform(FRotator::ZeroRotator, newPos, newScale);
 }
 
 void ASnakePawn::Move(float x, float y)
 {
-	XSpeed = x;
-	YSpeed = y;
+	Speed = FVector2D(x, y);
 }
 
 void ASnakePawn::OnMoveUp(float value)

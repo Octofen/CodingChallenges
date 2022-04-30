@@ -6,9 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "SnakePawn.generated.h"
 
-class UInstancedStaticMeshComponent;
 class UCameraComponent;
-class USnakeData;
 
 UCLASS()
 class CODINGCHALLENGES_API ASnakePawn : public APawn
@@ -17,38 +15,25 @@ class CODINGCHALLENGES_API ASnakePawn : public APawn
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
-	UInstancedStaticMeshComponent* InstancedStaticMesh;
-
-	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
-	TSoftObjectPtr<USnakeData> DataSoft;
-
-	UPROPERTY()
-	USnakeData* Data;
-
-	float X;
-	float Y;
-	float XSpeed;
-	float YSpeed;
+	FVector2D Position;
+	FVector2D Speed;
 
 	float HalfWidth;
 	float HalfHeight;
-
-	float ElapsedTime = 0.f;
+	float TileSize;
 
 public:
 	ASnakePawn();
 
-	void BeginPlay() override;
+	void Initialize(float halfWidth, float halfHeight, float tileSize);
 
-	void Tick(float DeltaSeconds) override;
-
-protected:
 	void Update();
 
-	void Show();
+	FTransform Show();
+
+protected:
 
 	void Move(float x, float y);
 
