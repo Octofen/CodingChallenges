@@ -11,7 +11,9 @@ FSnakeFood::FSnakeFood(int columns, int rows)
 
 FVector2D FSnakeFood::PickLocation()
 {
-	float x = FMath::RandRange(0, Columns - 1);
-	float y = FMath::RandRange(0, Rows - 1);
-	return  FVector2D(x, y);
+	int x = FMath::RandRange(0, Columns - 1);
+	int y = FMath::RandRange(0, Rows - 1);
+	Position = FVector2D(x, y);
+	
+	return Position;
 }

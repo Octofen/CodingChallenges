@@ -63,6 +63,12 @@ void ASnakeGame::Tick(float DeltaSeconds)
 
 		FTransform snakeT = ConstructTransform(Snake->Position);
 		SnakePartsMesh->UpdateInstanceTransform(0, snakeT, false, true);
+
+		if(Snake->Eat(SnakeFood->Position))
+		{
+			FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
+			FoodMesh->UpdateInstanceTransform(0, foodT, false, true);
+		}
 	}
 }
 

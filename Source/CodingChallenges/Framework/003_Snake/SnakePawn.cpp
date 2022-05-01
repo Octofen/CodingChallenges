@@ -41,7 +41,8 @@ void ASnakePawn::Update()
 
 bool ASnakePawn::Eat(FVector2D foodPosition)
 {
-	return false;
+	int dist = FVector2D::DistSquared(Position, foodPosition);
+	return dist < 1;
 }
 
 void ASnakePawn::Move(int x, int y)

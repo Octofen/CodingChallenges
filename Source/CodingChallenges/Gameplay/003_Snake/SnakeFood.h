@@ -10,6 +10,9 @@ struct FSnakeFood
 {
 	GENERATED_USTRUCT_BODY()
 
+public:
+	FVector2D Position;
+
 protected:
 	int Columns;
 	int Rows;
