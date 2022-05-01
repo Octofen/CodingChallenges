@@ -17,4 +17,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
 	float GameSpeed = 10.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	float ShapeSize = 0.95f;
 };

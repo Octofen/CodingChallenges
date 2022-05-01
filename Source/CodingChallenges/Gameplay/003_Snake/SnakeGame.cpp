@@ -42,8 +42,12 @@ void ASnakeGame::BeginPlay()
 	APawn* pawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	Snake = Cast<ASnakePawn>(pawn);
 	Snake->Initialize(columns, rows);
-	FTransform snakeT = ConstructTransform(Snake->Position);
-	SnakePartsMesh->AddInstance(snakeT);
+
+	for(FVector2D snakePart : Snake->PartsPosition)
+	{
+		FTransform snakePartT = ConstructTransform(snakePart);
+		SnakePartsMesh->AddInstance(snakePartT);
+	}
 
 	SnakeFood = TSharedPtr<FSnakeFood>(new FSnakeFood(columns, rows));
 	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
@@ -61,11 +65,18 @@ void ASnakeGame::Tick(float DeltaSeconds)
 		ElapsedTime = 0.f;
 		Snake->Update();
 
-		FTransform snakeT = ConstructTransform(Snake->Position);
-		SnakePartsMesh->UpdateInstanceTransform(0, snakeT, false, true);
+		for(int i = 0; i < Snake->PartsPosition.Num(); i++)
+		{
+			FVector2D snakePart = Snake->PartsPosition[i];
+			FTransform snakePartT = ConstructTransform(snakePart);
+			SnakePartsMesh->UpdateInstanceTransform(i, snakePartT, false, true);
+		}
 
 		if(Snake->Eat(SnakeFood->Position))
 		{
+			FTransform newPartT = ConstructTransform(Snake->PartsPosition.Last());
+			SnakePartsMesh->AddInstance(newPartT);
+
 			FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
 			FoodMesh->UpdateInstanceTransform(0, foodT, false, true);
 		}
@@ -77,7 +88,7 @@ FTransform ASnakeGame::ConstructTransform(FVector2D inPos)
 	float x = (inPos.X * Data->TileSize) - HalfWidth + Data->TileSize * 0.5f;
 	float y = (inPos.Y * Data->TileSize * -1) + HalfHeight - Data->TileSize * 0.5f;
 	FVector location = FVector(0.f, x, y);
-	FVector scale = FVector(Data->TileSize * 0.01f);
+	FVector scale = FVector(Data->TileSize * 0.01f * Data->ShapeSize);
 
 	return FTransform(FRotator::ZeroRotator, location, scale);
 }

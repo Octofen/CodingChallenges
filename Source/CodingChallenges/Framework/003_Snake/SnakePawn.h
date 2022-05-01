@@ -14,13 +14,14 @@ class CODINGCHALLENGES_API ASnakePawn : public APawn
 	GENERATED_BODY()
 
 public:
-	FVector2D Position;
+	TArray<FVector2D> PartsPosition;
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UCameraComponent* Camera;
 
 	FVector2D Speed;
+	FVector2D TailPosition;
 
 	int Columns;
 	int Rows;
