@@ -13,11 +13,10 @@ ASnakePawn::ASnakePawn()
 	Camera->SetupAttachment(RootComponent);
 }
 
-void ASnakePawn::Initialize(float halfWidth, float halfHeight, float tileSize)
+void ASnakePawn::Initialize(int columns, int rows)
 {
-	this->HalfWidth = halfWidth;
-	this->HalfHeight = halfHeight;
-	this->TileSize = tileSize;
+	this->Columns = columns;
+	this->Rows = rows;
 
 	APlayerController* playerController = GetWorld()->GetFirstPlayerController();
 
@@ -27,44 +26,37 @@ void ASnakePawn::Initialize(float halfWidth, float halfHeight, float tileSize)
 		mainPlayerController->DoOnceAxisRightEvent.AddUniqueDynamic(this, &ASnakePawn::OnMoveRight);
 	}
 
-	float x = FMath::RoundToFloat(-HalfWidth);
-	float y = FMath::RoundToFloat(HalfHeight);
-	Position = FVector2D(x, y);
-	Speed = FVector2D(1.f, 0.f);
+	Position = FVector2D(0, 0);
+	Speed = FVector2D(1, 0);
 }
 
 void ASnakePawn::Update()
 {
-	Position.X += Speed.X * TileSize;
-	Position.Y += Speed.Y * TileSize;
+	Position.X += Speed.X;
+	Position.Y += Speed.Y;
 
-	Position.X = FMath::Clamp(Position.X, -HalfWidth, HalfWidth - TileSize);
-	Position.Y = FMath::Clamp(Position.Y, -HalfHeight + TileSize, HalfHeight);
+	Position.X = FMath::Clamp(Position.X, 0, Columns - 1);
+	Position.Y = FMath::Clamp(Position.Y, 0, Rows - 1);
 }
 
-FTransform ASnakePawn::Show()
+bool ASnakePawn::Eat(FVector2D foodPosition)
 {
-	float newX = Position.X;
-	float newY = Position.Y;
-	FVector newPos = FVector(0.f, newX, newY);
-	FVector newScale = FVector(TileSize * 0.01f);
-
-	return FTransform(FRotator::ZeroRotator, newPos, newScale);
+	return false;
 }
 
-void ASnakePawn::Move(float x, float y)
+void ASnakePawn::Move(int x, int y)
 {
 	Speed = FVector2D(x, y);
 }
 
 void ASnakePawn::OnMoveUp(float value)
 {
-	value = value > 0.f ? 1.f : -1.f;
-	Move(0.f, value);
+	int i = value > 0.f ? -1 : 1;
+	Move(0, i);
 }
 
 void ASnakePawn::OnMoveRight(float value)
 {
-	value = value > 0.f ? 1.f : -1.f;
-	Move(value, 0.f);
+	int i = value > 0.f ? 1 : -1;
+	Move(i, 0);
 }

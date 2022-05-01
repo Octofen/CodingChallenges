@@ -11,12 +11,13 @@ struct FSnakeFood
 	GENERATED_USTRUCT_BODY()
 
 protected:
-	FVector2D Position;
+	int Columns;
+	int Rows;
 
 public:
 	FSnakeFood() { };
 
-	FSnakeFood(float halfWidth, float halfHeight, float tileSize);
+	FSnakeFood(int columns, int rows);
 
-	FTransform Show(float tileSize);
+	FVector2D PickLocation();
 };

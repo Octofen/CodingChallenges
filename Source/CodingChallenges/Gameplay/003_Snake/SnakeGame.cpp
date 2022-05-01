@@ -34,18 +34,20 @@ void ASnakeGame::BeginPlay()
 	Data = DataSoft.Get();
 
 	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
+	int columns = FMath::FloorToFloat(viewport.X / Data->TileSize);
+	int rows = FMath::FloorToFloat(viewport.Y / Data->TileSize);
 	HalfWidth = viewport.X * 0.5f;
 	HalfHeight = viewport.Y * 0.5f;
 
 	APawn* pawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	Snake = Cast<ASnakePawn>(pawn);
-	Snake->Initialize(HalfWidth, HalfHeight, Data->TileSize);
-	FTransform snakeT = Snake->Show();
-	SnakePartsMesh->AddInstance(AdjustLocation(snakeT));
+	Snake->Initialize(columns, rows);
+	FTransform snakeT = ConstructTransform(Snake->Position);
+	SnakePartsMesh->AddInstance(snakeT);
 
-	SnakeFood = TSharedPtr<FSnakeFood>(new FSnakeFood(HalfWidth, HalfHeight, Data->TileSize));
-	FTransform foodT = SnakeFood->Show(Data->TileSize);
-	FoodMesh->AddInstance(AdjustLocation(foodT));
+	SnakeFood = TSharedPtr<FSnakeFood>(new FSnakeFood(columns, rows));
+	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
+	FoodMesh->AddInstance(foodT);
 }
 
 void ASnakeGame::Tick(float DeltaSeconds)
@@ -59,20 +61,17 @@ void ASnakeGame::Tick(float DeltaSeconds)
 		ElapsedTime = 0.f;
 		Snake->Update();
 
-		FTransform snakeT = Snake->Show();
-		SnakePartsMesh->UpdateInstanceTransform(0, AdjustLocation(snakeT), false, true);
+		FTransform snakeT = ConstructTransform(Snake->Position);
+		SnakePartsMesh->UpdateInstanceTransform(0, snakeT, false, true);
 	}
 }
 
-FTransform ASnakeGame::AdjustLocation(FTransform inT)
+FTransform ASnakeGame::ConstructTransform(FVector2D inPos)
 {
-	float x = inT.GetLocation().Y + HalfWidth;
-	float y = inT.GetLocation().Z + HalfHeight;
-	float col = FMath::FloorToFloat(x / Data->TileSize);
-	float row = FMath::FloorToFloat(y / Data->TileSize);
-	float resultX = (col * Data->TileSize) - HalfWidth + Data->TileSize * 0.5f;
-	float resultY = (row * Data->TileSize) - HalfHeight - Data->TileSize * 0.5f;
+	float x = (inPos.X * Data->TileSize) - HalfWidth + Data->TileSize * 0.5f;
+	float y = (inPos.Y * Data->TileSize * -1) + HalfHeight - Data->TileSize * 0.5f;
+	FVector location = FVector(0.f, x, y);
+	FVector scale = FVector(Data->TileSize * 0.01f);
 
-	inT.SetLocation(FVector(0.f, resultX, resultY));
-	return inT;
+	return FTransform(FRotator::ZeroRotator, location, scale);
 }

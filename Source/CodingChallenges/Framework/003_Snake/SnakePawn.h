@@ -13,29 +13,30 @@ class CODINGCHALLENGES_API ASnakePawn : public APawn
 {
 	GENERATED_BODY()
 
+public:
+	FVector2D Position;
+
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UCameraComponent* Camera;
 
-	FVector2D Position;
 	FVector2D Speed;
 
-	float HalfWidth;
-	float HalfHeight;
-	float TileSize;
+	int Columns;
+	int Rows;
 
 public:
 	ASnakePawn();
 
-	void Initialize(float halfWidth, float halfHeight, float tileSize);
+	void Initialize(int columns, int rows);
 
 	void Update();
 
-	FTransform Show();
+	bool Eat(FVector2D foodPosition);
 
 protected:
 
-	void Move(float x, float y);
+	void Move(int x, int y);
 
 	UFUNCTION()
 	void OnMoveUp(float value);

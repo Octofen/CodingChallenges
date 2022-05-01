@@ -49,5 +49,5 @@ public:
 	void Tick(float DeltaSeconds) override;
 
 protected:
-	FTransform AdjustLocation(FTransform inT);
+	FTransform ConstructTransform(FVector2D inPos);
 };
