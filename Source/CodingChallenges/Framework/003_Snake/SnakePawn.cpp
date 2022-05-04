@@ -112,11 +112,23 @@ void ASnakePawn::OnAddSnakePart()
 void ASnakePawn::OnMoveUp(float value)
 {
 	int i = value > 0.f ? -1 : 1;
+
+	if(PartsPosition.Num() > 1 && Speed.Y + i == 0)
+	{
+		return;
+	}
+
 	Move(0, i);
 }
 
 void ASnakePawn::OnMoveRight(float value)
 {
 	int i = value > 0.f ? 1 : -1;
+
+	if(PartsPosition.Num() > 1 && Speed.X + i == 0)
+	{
+		return;
+	}
+
 	Move(i, 0);
 }

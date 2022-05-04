@@ -58,12 +58,13 @@ void ASnakeGame::Tick(float DeltaSeconds)
 	{
 		ElapsedTime = 0.f;
 
+		Snake->Update();
+
 		if(Snake->Death())
 		{
 			ResetSnake();
 		}
-
-		Snake->Update();
+		
 		MoveSnake();
 
 		if(Snake->Eat(SnakeFood->Position))
