@@ -47,8 +47,6 @@ void ASnakePawn::Update()
 
 	float x = PartsPosition[0].X + Speed.X;
 	float y = PartsPosition[0].Y + Speed.Y;
-	x = FMath::Clamp(x, 0, Columns - 1);
-	y = FMath::Clamp(y, 0, Rows - 1);
 
 	PartsPosition[0] = FVector2D(x, y);
 }
@@ -80,6 +78,16 @@ bool ASnakePawn::Death()
 			Reset();
 			return true;
 		}
+	}
+
+	bool bOutOfBounds =
+		head.X < 0 || head.X >= Columns ||
+		head.Y < 0 || head.Y >= Rows;
+
+	if(bOutOfBounds)
+	{
+		Reset();
+		return true;
 	}
 
 	return false;
