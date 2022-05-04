@@ -13,6 +13,13 @@ ASnakePawn::ASnakePawn()
 	Camera->SetupAttachment(RootComponent);
 }
 
+void ASnakePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	InputComponent->BindAction("Menu Validate", IE_Pressed, this, &ASnakePawn::OnAddSnakePart);
+}
+
 void ASnakePawn::Initialize(int columns, int rows)
 {
 	this->Columns = columns;
@@ -61,9 +68,45 @@ bool ASnakePawn::Eat(FVector2D foodPosition)
 	return false;
 }
 
+bool ASnakePawn::Death()
+{
+	FVector2D head = PartsPosition[0];
+
+	for(int i = 1; i < PartsPosition.Num(); i++)
+	{
+		FVector2D pos = PartsPosition[i];
+		int dist = FVector2D::DistSquared(head, pos);
+
+		if(dist < 1)
+		{
+			PartsPosition = {head};
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool ASnakePawn::Cheat()
+{
+	if(bCheat)
+	{
+		bCheat = false;
+		PartsPosition.Add(TailPosition);
+		return true;
+	}
+
+	return false;
+}
+
 void ASnakePawn::Move(int x, int y)
 {
 	Speed = FVector2D(x, y);
+}
+
+void ASnakePawn::OnAddSnakePart()
+{
+	bCheat = true;
 }
 
 void ASnakePawn::OnMoveUp(float value)

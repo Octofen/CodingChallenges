@@ -42,16 +42,10 @@ void ASnakeGame::BeginPlay()
 	APawn* pawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	Snake = Cast<ASnakePawn>(pawn);
 	Snake->Initialize(columns, rows);
-
-	for(FVector2D snakePart : Snake->PartsPosition)
-	{
-		FTransform snakePartT = ConstructTransform(snakePart);
-		SnakePartsMesh->AddInstance(snakePartT);
-	}
+	GrowSnake();
 
 	SnakeFood = TSharedPtr<FSnakeFood>(new FSnakeFood(columns, rows));
-	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
-	FoodMesh->AddInstance(foodT);
+	AddFood();
 }
 
 void ASnakeGame::Tick(float DeltaSeconds)
@@ -63,22 +57,23 @@ void ASnakeGame::Tick(float DeltaSeconds)
 	if(ElapsedTime >= 1.f)
 	{
 		ElapsedTime = 0.f;
-		Snake->Update();
 
-		for(int i = 0; i < Snake->PartsPosition.Num(); i++)
+		if(Snake->Death())
 		{
-			FVector2D snakePart = Snake->PartsPosition[i];
-			FTransform snakePartT = ConstructTransform(snakePart);
-			SnakePartsMesh->UpdateInstanceTransform(i, snakePartT, false, true);
+			ResetSnake();
 		}
+
+		Snake->Update();
+		MoveSnake();
 
 		if(Snake->Eat(SnakeFood->Position))
 		{
-			FTransform newPartT = ConstructTransform(Snake->PartsPosition.Last());
-			SnakePartsMesh->AddInstance(newPartT);
-
-			FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
-			FoodMesh->UpdateInstanceTransform(0, foodT, false, true);
+			GrowSnake();
+			ReplaceFood();
+		}
+		else if(Snake->Cheat())
+		{
+			GrowSnake();
 		}
 	}
 }
@@ -91,4 +86,42 @@ FTransform ASnakeGame::ConstructTransform(FVector2D inPos)
 	FVector scale = FVector(Data->TileSize * 0.01f * Data->ShapeSize);
 
 	return FTransform(FRotator::ZeroRotator, location, scale);
+}
+
+void ASnakeGame::MoveSnake()
+{
+	for(int i = 0; i < Snake->PartsPosition.Num(); i++)
+	{
+		FVector2D snakePart = Snake->PartsPosition[i];
+		FTransform snakePartT = ConstructTransform(snakePart);
+		SnakePartsMesh->UpdateInstanceTransform(i, snakePartT, false, true);
+	}
+}
+
+void ASnakeGame::GrowSnake()
+{
+	FTransform newPartT = ConstructTransform(Snake->PartsPosition.Last());
+	SnakePartsMesh->AddInstance(newPartT);
+}
+
+void ASnakeGame::ResetSnake()
+{
+	int instancesCount = SnakePartsMesh->GetInstanceCount();
+
+	for(int i = 1; i < instancesCount; i++)
+	{
+		SnakePartsMesh->RemoveInstance(1);
+	}
+}
+
+void ASnakeGame::AddFood()
+{
+	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
+	FoodMesh->AddInstance(foodT);
+}
+
+void ASnakeGame::ReplaceFood()
+{
+	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
+	FoodMesh->UpdateInstanceTransform(0, foodT, false, true);
 }

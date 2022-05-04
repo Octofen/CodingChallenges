@@ -50,4 +50,14 @@ public:
 
 protected:
 	FTransform ConstructTransform(FVector2D inPos);
+
+	void MoveSnake();
+
+	void GrowSnake();
+
+	void ResetSnake();
+
+	void AddFood();
+
+	void ReplaceFood();
 };
