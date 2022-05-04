@@ -33,9 +33,7 @@ void ASnakePawn::Initialize(int columns, int rows)
 		mainPlayerController->DoOnceAxisRightEvent.AddUniqueDynamic(this, &ASnakePawn::OnMoveRight);
 	}
 
-	PartsPosition.Add(FVector2D(0, 0));
-	Speed = FVector2D(1, 0);
-	TailPosition = PartsPosition[0];
+	Reset();
 }
 
 void ASnakePawn::Update()
@@ -79,7 +77,7 @@ bool ASnakePawn::Death()
 
 		if(dist < 1)
 		{
-			PartsPosition = {head};
+			Reset();
 			return true;
 		}
 	}
@@ -102,6 +100,15 @@ bool ASnakePawn::Cheat()
 void ASnakePawn::Move(int x, int y)
 {
 	Speed = FVector2D(x, y);
+}
+
+void ASnakePawn::Reset()
+{
+	PartsPosition.Empty();
+
+	PartsPosition.Add(FVector2D(0, 0));
+	Speed = FVector2D(1, 0);
+	TailPosition = PartsPosition[0];
 }
 
 void ASnakePawn::OnAddSnakePart()

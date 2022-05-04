@@ -47,6 +47,8 @@ protected:
 
 	void Move(int x, int y);
 
+	void Reset();
+
 	UFUNCTION()
 	void OnAddSnakePart();
 
