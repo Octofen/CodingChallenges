@@ -22,5 +22,5 @@ public:
 
 	FSnakeFood(int columns, int rows);
 
-	FVector2D PickLocation();
+	FVector2D PickLocation(TArray<FVector2D> availableSpots);
 };

@@ -15,6 +15,7 @@ class CODINGCHALLENGES_API ASnakePawn : public APawn
 
 public:
 	TArray<FVector2D> PartsPosition;
+	TArray<FVector2D> AvailableSpots;
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
@@ -42,6 +43,8 @@ public:
 	bool Death();
 
 	bool Cheat();
+
+	bool Win();
 
 protected:
 

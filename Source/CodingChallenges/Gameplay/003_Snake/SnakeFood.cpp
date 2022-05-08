@@ -9,11 +9,10 @@ FSnakeFood::FSnakeFood(int columns, int rows)
 	this->Rows = rows;
 }
 
-FVector2D FSnakeFood::PickLocation()
+FVector2D FSnakeFood::PickLocation(TArray<FVector2D> availableSpots)
 {
-	int x = FMath::RandRange(0, Columns - 1);
-	int y = FMath::RandRange(0, Rows - 1);
-	Position = FVector2D(x, y);
+	int rand = FMath::RandRange(0, availableSpots.Num() - 1);
+	Position = availableSpots[rand];
 	
 	return Position;
 }

@@ -69,11 +69,29 @@ void ASnakeGame::Tick(float DeltaSeconds)
 
 		if(Snake->Eat(SnakeFood->Position))
 		{
+			if(Snake->Win())
+			{
+				ResetSnake();
+				MoveSnake();
+				ReplaceFood();
+
+				return;
+			}
+
 			GrowSnake();
 			ReplaceFood();
 		}
 		else if(Snake->Cheat())
 		{
+			if(Snake->Win())
+			{
+				ResetSnake();
+				MoveSnake();
+				ReplaceFood();
+
+				return;
+			}
+
 			GrowSnake();
 		}
 	}
@@ -117,12 +135,12 @@ void ASnakeGame::ResetSnake()
 
 void ASnakeGame::AddFood()
 {
-	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
+	FTransform foodT = ConstructTransform(SnakeFood->PickLocation(Snake->AvailableSpots));
 	FoodMesh->AddInstance(foodT);
 }
 
 void ASnakeGame::ReplaceFood()
 {
-	FTransform foodT = ConstructTransform(SnakeFood->PickLocation());
+	FTransform foodT = ConstructTransform(SnakeFood->PickLocation(Snake->AvailableSpots));
 	FoodMesh->UpdateInstanceTransform(0, foodT, false, true);
 }

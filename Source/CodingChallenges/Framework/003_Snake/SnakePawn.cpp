@@ -49,6 +49,8 @@ void ASnakePawn::Update()
 	float y = PartsPosition[0].Y + Speed.Y;
 
 	PartsPosition[0] = FVector2D(x, y);
+	AvailableSpots.Add(TailPosition);
+	AvailableSpots.Remove(PartsPosition[0]);
 }
 
 bool ASnakePawn::Eat(FVector2D foodPosition)
@@ -58,6 +60,7 @@ bool ASnakePawn::Eat(FVector2D foodPosition)
 	if(dist < 1)
 	{
 		PartsPosition.Add(TailPosition);
+		AvailableSpots.Remove(TailPosition);
 		return true;
 	}
 
@@ -99,6 +102,18 @@ bool ASnakePawn::Cheat()
 	{
 		bCheat = false;
 		PartsPosition.Add(TailPosition);
+		AvailableSpots.Remove(TailPosition);
+		return true;
+	}
+
+	return false;
+}
+
+bool ASnakePawn::Win()
+{
+	if(AvailableSpots.Num() == 0)
+	{
+		Reset();
 		return true;
 	}
 
@@ -112,9 +127,19 @@ void ASnakePawn::Move(int x, int y)
 
 void ASnakePawn::Reset()
 {
+	AvailableSpots.Empty();
 	PartsPosition.Empty();
 
+	for(int x = 0; x < Columns; x++)
+	{
+		for(int y = 0; y < Rows; y++)
+		{
+			AvailableSpots.Add(FVector2D(x, y));
+		}
+	}
+
 	PartsPosition.Add(FVector2D(0, 0));
+	AvailableSpots.Remove(PartsPosition[0]);
 	Speed = FVector2D(1, 0);
 	TailPosition = PartsPosition[0];
 }
