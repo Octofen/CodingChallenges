@@ -40,5 +40,5 @@ FVector2D UCCUtils::GetCameraViewportSize(UWorld* world)
 		return FVector2D();
 	}
 
-	return FVector2D(view.OrthoWidth, view.OrthoWidth * view.AspectRatio);
+	return FVector2D(view.OrthoWidth, view.OrthoWidth / view.AspectRatio);
 }
