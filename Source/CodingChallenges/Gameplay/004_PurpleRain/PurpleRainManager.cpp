@@ -18,15 +18,25 @@ void APurpleRainManager::BeginPlay()
 	Super::BeginPlay();
 
 	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
-	Drop = TSharedPtr<FPurpleRainDrop>(new FPurpleRainDrop(viewport.X, viewport.Y));
 
-	InstancedStaticMesh->AddInstance(Drop->Show(), true);
+	for(int i = 0; i < 100; i++)
+	{
+		TSharedPtr<FPurpleRainDrop> drop = TSharedPtr<FPurpleRainDrop>(new FPurpleRainDrop(viewport.X, viewport.Y));
+		InstancedStaticMesh->AddInstance(drop->Show(), true);
+		Drops.Add(drop);
+	}
 }
 
 void APurpleRainManager::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	Drop->Fall();
-	InstancedStaticMesh->UpdateInstanceTransform(0, Drop->Show(), true, true);
+	for(int i = 0; i < Drops.Num(); i++)
+	{
+		TSharedPtr<FPurpleRainDrop> drop = Drops[i];
+		drop->Fall();
+		InstancedStaticMesh->UpdateInstanceTransform(i, drop->Show(), true);
+	}
+
+	InstancedStaticMesh->MarkRenderStateDirty();
 }

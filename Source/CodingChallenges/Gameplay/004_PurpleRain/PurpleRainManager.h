@@ -18,7 +18,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UInstancedStaticMeshComponent* InstancedStaticMesh;
 
-	TSharedPtr<FPurpleRainDrop> Drop;
+	TArray<TSharedPtr<FPurpleRainDrop>> Drops;
 
 public:	
 	APurpleRainManager();
