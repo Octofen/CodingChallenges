@@ -9,7 +9,7 @@ FPurpleRainDrop::FPurpleRainDrop(float width, float height)
 	this->Height = height;
 
 	X = FMath::RandRange(0.f, Width);
-	Y = 0.f;
+	Y = FMath::RandRange(-200.f, -100.f);
 	YSpeed = 1.f;
 }
 
