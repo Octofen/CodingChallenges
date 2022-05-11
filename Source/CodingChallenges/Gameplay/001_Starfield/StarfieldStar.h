@@ -31,7 +31,7 @@ public:
 
 	FStarfieldStar(float halfWidth, float halfHeight, float minSize, float maxSize, int index);
 
-	void Update(float speed);
+	void Update(float speed, float delta);
 
 	FTransform Show();
 };

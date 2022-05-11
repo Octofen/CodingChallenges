@@ -56,7 +56,7 @@ void AStarfieldManager::Tick(float DeltaSeconds)
 
 	for(TSharedPtr<FStarfieldStar> star : Stars)
 	{
-		star->Update(speed);
+		star->Update(speed, DeltaSeconds);
 		FTransform t = star->Show();
 
 		InstancedStaticMesh->UpdateInstanceTransform(star->Index, t, true);

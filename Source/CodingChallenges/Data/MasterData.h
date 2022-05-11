@@ -21,15 +21,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Pause")
 	TSoftObjectPtr<UWorld> HUBLevel;
 
-	// The input will allow the navigation in the menu only above that value
-	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Pause")
+	// The input will allow the axis update only above that value
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Controller")
 	float AxisDeadZone = 0.3f;
 
-	// After a successfull menu navigation
-	// The input will allow another navigation in the menu only if it's reset bellow that value
-	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Pause")
+	// After a successfull axis update
+	// The input will allow another axis update only if it's reset bellow that value
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Controller")
 	float AxisResetValue = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Fade")
 	TSoftClassPtr<UFadeManager> FadeManagerClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Frame Rate")
+	float FrameRate = 60.f;
 };

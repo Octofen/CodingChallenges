@@ -23,7 +23,7 @@ public:
 
 	FPurpleRainDrop(float width, float height);
 
-	void Fall();
+	void Fall(float delta);
 
 	FTransform Show();
 };

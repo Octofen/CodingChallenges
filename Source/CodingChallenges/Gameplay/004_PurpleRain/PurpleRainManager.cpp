@@ -34,7 +34,7 @@ void APurpleRainManager::Tick(float DeltaSeconds)
 	for(int i = 0; i < Drops.Num(); i++)
 	{
 		TSharedPtr<FPurpleRainDrop> drop = Drops[i];
-		drop->Fall();
+		drop->Fall(DeltaSeconds);
 		InstancedStaticMesh->UpdateInstanceTransform(i, drop->Show(), true);
 	}
 
