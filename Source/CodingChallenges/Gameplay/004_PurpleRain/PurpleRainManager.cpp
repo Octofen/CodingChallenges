@@ -19,7 +19,7 @@ void APurpleRainManager::BeginPlay()
 
 	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
 
-	for(int i = 0; i < 100; i++)
+	for(int i = 0; i < 500; i++)
 	{
 		TSharedPtr<FPurpleRainDrop> drop = TSharedPtr<FPurpleRainDrop>(new FPurpleRainDrop(viewport.X, viewport.Y));
 		InstancedStaticMesh->AddInstance(drop->Show(), true);
