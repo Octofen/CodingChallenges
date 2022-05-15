@@ -8,6 +8,7 @@
 #include "PurpleRainManager.generated.h"
 
 class UInstancedStaticMeshComponent;
+class UPurpleRainData;
 
 UCLASS()
 class CODINGCHALLENGES_API APurpleRainManager : public AActor
@@ -17,6 +18,12 @@ class CODINGCHALLENGES_API APurpleRainManager : public AActor
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UInstancedStaticMeshComponent* InstancedStaticMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	TSoftObjectPtr<UPurpleRainData> DataSoft;
+
+	UPROPERTY()
+	UPurpleRainData* Data;
 
 	TArray<TSharedPtr<FPurpleRainDrop>> Drops;
 

@@ -4,27 +4,29 @@
 #include "PurpleRainDrop.h"
 #include "CodingChallenges/Framework/CCUtils.h"
 #include "CodingChallenges/Data/MasterData.h"
+#include "CodingChallenges/Data/004_PurpleRain/PurpleRainData.h"
 
-FPurpleRainDrop::FPurpleRainDrop(float width, float height)
+FPurpleRainDrop::FPurpleRainDrop(float width, float height, UPurpleRainData* data)
 {
 	this->Width = width;
 	this->Height = height;
+	this->Data = data;
 
 	X = FMath::RandRange(0.f, Width);
-	Y = FMath::RandRange(-200.f, -100.f);
-	YSpeed = FMath::RandRange(4.f, 10.f);
-	Length = FMath::RandRange(10.f, 20.f);
+	Y = FMath::RandRange(data->DropHigherSpawnPosition * -1.f, data->DropLowerSpawnPosition * -1.f);
+	YSpeed = FMath::RandRange(data->DropMinBaseSpeed, data->DropMaxBaseSpeed);
+	Length = FMath::RandRange(data->DropMinLength, data->DropMaxLength);
 }
 
 void FPurpleRainDrop::Fall(float delta)
 {
 	Y += YSpeed * delta * UCCUtils::GetMasterData()->FrameRate;
-	YSpeed += 0.05f;
+	YSpeed += Data->DropAcceleration;
 
 	if(Y > Height)
 	{
-		Y = FMath::RandRange(-200.f, -100.f);
-		YSpeed = FMath::RandRange(4.f, 10.f);
+		Y = FMath::RandRange(Data->DropHigherSpawnPosition * -1.f, Data->DropLowerSpawnPosition * -1.f);
+		YSpeed = FMath::RandRange(Data->DropMinBaseSpeed, Data->DropMaxBaseSpeed);
 	}
 }
 

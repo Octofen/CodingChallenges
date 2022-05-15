@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "PurpleRainDrop.generated.h"
 
+class UPurpleRainData;
+
 USTRUCT()
 struct FPurpleRainDrop
 {
@@ -19,10 +21,13 @@ protected:
 	float Width;
 	float Height;
 
+	UPROPERTY()
+	UPurpleRainData* Data;
+
 public:
 	FPurpleRainDrop() { }
 
-	FPurpleRainDrop(float width, float height);
+	FPurpleRainDrop(float width, float height, UPurpleRainData* data);
 
 	void Fall(float delta);
 
