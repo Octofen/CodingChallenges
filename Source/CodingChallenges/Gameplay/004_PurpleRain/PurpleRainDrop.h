@@ -15,8 +15,11 @@ struct FPurpleRainDrop
 protected:
 	float X;
 	float Y;
+	float Z;
 	float YSpeed;
 	float Length;
+	float Tickness;
+	float Acceleration;
 
 	float Width;
 	float Height;
@@ -32,4 +35,7 @@ public:
 	void Fall(float deltaRatio);
 
 	FTransform Show();
+
+protected:
+	void ProcessLifetime();
 };

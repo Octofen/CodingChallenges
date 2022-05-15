@@ -25,11 +25,26 @@ public:
 	float DropMaxBaseSpeed = 10.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Speed")
-	float DropAcceleration = 0.05f;
+	float DropMinAcceleration = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Length")
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Speed")
+	float DropMaxAcceleration = 0.2f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Scale")
 	float DropMinLength = 10.f;
 
-	UPROPERTY(EditDefaultsOnly,  Category = "_Settings\|Length")
+	UPROPERTY(EditDefaultsOnly,  Category = "_Settings\|Scale")
 	float DropMaxLength = 20.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Scale")
+	float DropMinTickness = 1.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Scale")
+	float DropMaxTickness = 3.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Depth")
+	float DropMinDepth = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings\|Depth")
+	float DropMaxDepth = 20.f;
 };

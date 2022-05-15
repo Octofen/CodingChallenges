@@ -10,10 +10,7 @@ FPurpleRainDrop::FPurpleRainDrop(float width, float height, UPurpleRainData* dat
 	this->Height = height;
 	this->Data = data;
 
-	X = FMath::RandRange(0.f, Width);
-	Y = FMath::RandRange(data->DropHigherSpawnPosition * -1.f, data->DropLowerSpawnPosition * -1.f);
-	YSpeed = FMath::RandRange(data->DropMinBaseSpeed, data->DropMaxBaseSpeed);
-	Length = FMath::RandRange(data->DropMinLength, data->DropMaxLength);
+	ProcessLifetime();
 }
 
 void FPurpleRainDrop::Fall(float deltaRatio)
@@ -22,20 +19,36 @@ void FPurpleRainDrop::Fall(float deltaRatio)
 
 	if(Y > 0.f)
 	{
-		YSpeed += Data->DropAcceleration * deltaRatio;
+		YSpeed += Acceleration * deltaRatio;
 	}
 
 	if(Y > Height)
 	{
-		Y = FMath::RandRange(Data->DropHigherSpawnPosition * -1.f, Data->DropLowerSpawnPosition * -1.f);
-		YSpeed = FMath::RandRange(Data->DropMinBaseSpeed, Data->DropMaxBaseSpeed);
+		ProcessLifetime();
 	}
 }
 
 FTransform FPurpleRainDrop::Show()
 {
 	FVector location = FVector(-100.f, X - Width * 0.5f, -Y + Height * 0.5f);
-	FVector scale = FVector(0.01f, 0.01f, Length * 0.01f);
+	FVector scale = FVector(Tickness, Tickness, Length) * 0.01f;
 
 	return FTransform(FRotator::ZeroRotator, location, scale);
+}
+
+void FPurpleRainDrop::ProcessLifetime()
+{
+	FVector2D depthRange = FVector2D(Data->DropMinDepth, Data->DropMaxDepth);
+	FVector2D speedRange = FVector2D(Data->DropMinBaseSpeed, Data->DropMaxBaseSpeed);
+	FVector2D lengthRange = FVector2D(Data->DropMinLength, Data->DropMaxLength);
+	FVector2D ticknessRange = FVector2D(Data->DropMinTickness, Data->DropMaxTickness);
+	FVector2D accelerationRange = FVector2D(Data->DropMinAcceleration, Data->DropMaxAcceleration);
+
+	X = FMath::RandRange(0.f, Width);
+	Y = FMath::RandRange(Data->DropHigherSpawnPosition * -1.f, Data->DropLowerSpawnPosition * -1.f);
+	Z = FMath::RandRange(depthRange.X, depthRange.Y);
+	YSpeed = FMath::GetMappedRangeValueClamped(depthRange, speedRange, Z);
+	Length = FMath::GetMappedRangeValueClamped(depthRange, lengthRange, Z);
+	Tickness = FMath::GetMappedRangeValueClamped(depthRange, ticknessRange, Z);
+	Acceleration = FMath::GetMappedRangeValueClamped(depthRange, accelerationRange, Z);
 }
