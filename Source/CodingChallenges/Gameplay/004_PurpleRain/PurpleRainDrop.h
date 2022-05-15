@@ -14,6 +14,7 @@ protected:
 	float X;
 	float Y;
 	float YSpeed;
+	float Length;
 
 	float Width;
 	float Height;
