@@ -2,8 +2,6 @@
 
 
 #include "PurpleRainDrop.h"
-#include "CodingChallenges/Framework/CCUtils.h"
-#include "CodingChallenges/Data/MasterData.h"
 #include "CodingChallenges/Data/004_PurpleRain/PurpleRainData.h"
 
 FPurpleRainDrop::FPurpleRainDrop(float width, float height, UPurpleRainData* data)
@@ -18,10 +16,14 @@ FPurpleRainDrop::FPurpleRainDrop(float width, float height, UPurpleRainData* dat
 	Length = FMath::RandRange(data->DropMinLength, data->DropMaxLength);
 }
 
-void FPurpleRainDrop::Fall(float delta)
+void FPurpleRainDrop::Fall(float deltaRatio)
 {
-	Y += YSpeed * delta * UCCUtils::GetMasterData()->FrameRate;
-	YSpeed += Data->DropAcceleration;
+	Y += YSpeed * deltaRatio;
+
+	if(Y > 0.f)
+	{
+		YSpeed += Data->DropAcceleration * deltaRatio;
+	}
 
 	if(Y > Height)
 	{

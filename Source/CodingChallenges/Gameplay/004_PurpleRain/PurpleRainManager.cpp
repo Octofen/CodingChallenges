@@ -5,6 +5,7 @@
 #include "Components/InstancedStaticMeshComponent.h"
 #include "CodingChallenges/Framework/CCUtils.h"
 #include "CodingChallenges/Data/004_PurpleRain/PurpleRainData.h"
+#include "CodingChallenges/Data/MasterData.h"
 
 APurpleRainManager::APurpleRainManager()
 {
@@ -39,10 +40,12 @@ void APurpleRainManager::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	float deltaRatio = DeltaSeconds * UCCUtils::GetMasterData()->FrameRate;
+
 	for(int i = 0; i < Drops.Num(); i++)
 	{
 		TSharedPtr<FPurpleRainDrop> drop = Drops[i];
-		drop->Fall(DeltaSeconds);
+		drop->Fall(deltaRatio);
 		InstancedStaticMesh->UpdateInstanceTransform(i, drop->Show(), true);
 	}
 

@@ -3,8 +3,6 @@
 
 #include "StarfieldStar.h"
 #include "Kismet/GameplayStatics.h"
-#include "CodingChallenges/Framework/CCUtils.h"
-#include "CodingChallenges/Data/MasterData.h"
 
 FStarfieldStar::FStarfieldStar(float halfWidth, float halfHeight, float minSize, float maxSize, int index)
 {
@@ -20,9 +18,9 @@ FStarfieldStar::FStarfieldStar(float halfWidth, float halfHeight, float minSize,
 	this->Index = index;
 }
 
-void FStarfieldStar::Update(float speed, float delta)
+void FStarfieldStar::Update(float speed, float deltaRatio)
 {
-	Z -= speed * delta * UCCUtils::GetMasterData()->FrameRate;
+	Z -= speed * deltaRatio;
 
 	if(Z < 1.f)
 	{
