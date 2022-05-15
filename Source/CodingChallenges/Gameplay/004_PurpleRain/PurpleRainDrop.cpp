@@ -19,10 +19,12 @@ FPurpleRainDrop::FPurpleRainDrop(float width, float height)
 void FPurpleRainDrop::Fall(float delta)
 {
 	Y += YSpeed * delta * UCCUtils::GetMasterData()->FrameRate;
+	YSpeed += 0.05f;
 
 	if(Y > Height)
 	{
 		Y = FMath::RandRange(-200.f, -100.f);
+		YSpeed = FMath::RandRange(4.f, 10.f);
 	}
 }
 
