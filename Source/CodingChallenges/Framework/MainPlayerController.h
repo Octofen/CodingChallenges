@@ -6,7 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MainPlayerController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMainControllerAxisEvent, float, value);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMainControllerAxisEvent, int, value);
 
 class UPauseMenu;
 class UMasterData;
@@ -55,7 +55,7 @@ protected:
 	void OnAxisRight(float value);
 
 	UFUNCTION()
-	void OnMenuUp(float value);
+	void OnMenuUp(int value);
 
 	UFUNCTION()
 	void OnMenuValidate();

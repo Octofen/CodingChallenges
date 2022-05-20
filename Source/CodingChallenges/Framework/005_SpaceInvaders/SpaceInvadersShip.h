@@ -16,6 +16,7 @@ protected:
 	UStaticMeshComponent* Mesh;
 
 	float X;
+	float Y;
 
 	float Width;
 	float Height;
@@ -24,4 +25,8 @@ public:
 	ASpaceInvadersShip();
 
 	void Initialize(float width, float height);
+
+protected:
+	UFUNCTION()
+	void OnMove(int value);
 };

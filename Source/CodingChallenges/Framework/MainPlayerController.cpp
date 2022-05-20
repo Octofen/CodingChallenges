@@ -146,7 +146,7 @@ void AMainPlayerController::OnAxisUp(float value)
 	if(bAxisUpInputsActive && abs >= masterData->AxisDeadZone)
 	{
 		bAxisUpInputsActive = false;
-		DoOnceAxisUpEvent.Broadcast(value);
+		DoOnceAxisUpEvent.Broadcast(value >= 0.f ? 1 : -1);
 	}
 }
 
@@ -163,11 +163,11 @@ void AMainPlayerController::OnAxisRight(float value)
 	if(bAxisRightInputsActive && abs >= masterData->AxisDeadZone)
 	{
 		bAxisRightInputsActive = false;
-		DoOnceAxisRightEvent.Broadcast(value);
+		DoOnceAxisRightEvent.Broadcast(value >= 0.f ? 1 : -1);
 	}
 }
 
-void AMainPlayerController::OnMenuUp(float value)
+void AMainPlayerController::OnMenuUp(int value)
 {
 	if (UGameplayStatics::IsGamePaused(GetWorld()) && IsValid(PauseMenu))
 	{

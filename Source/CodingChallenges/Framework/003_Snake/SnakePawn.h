@@ -56,8 +56,8 @@ protected:
 	void OnAddSnakePart();
 
 	UFUNCTION()
-	void OnMoveUp(float value);
+	void OnMoveUp(int value);
 
 	UFUNCTION()
-	void OnMoveRight(float value);
+	void OnMoveRight(int value);
 };

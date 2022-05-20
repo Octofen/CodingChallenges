@@ -18,7 +18,7 @@ protected:
 public:
 	void NativeOnInitialized() override;
 
-	void MenuNavvigation(float value);
+	void MenuNavvigation(int value);
 
 	void MenuValidate();
 

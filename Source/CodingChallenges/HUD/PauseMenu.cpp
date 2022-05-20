@@ -16,9 +16,9 @@ void UPauseMenu::NativeOnInitialized()
 	HoverCurrentButton();
 }
 
-void UPauseMenu::MenuNavvigation(float value)
+void UPauseMenu::MenuNavvigation(int value)
 {
-	ButtonIndex += value > 0.f ? 1 : -1;
+	ButtonIndex += value;
 	ButtonIndex = UCCUtils::AbsoluteModulo(ButtonIndex, 2);
 	HoverCurrentButton();
 }

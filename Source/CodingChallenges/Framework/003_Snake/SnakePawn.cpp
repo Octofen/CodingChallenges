@@ -149,26 +149,22 @@ void ASnakePawn::OnAddSnakePart()
 	bCheat = true;
 }
 
-void ASnakePawn::OnMoveUp(float value)
+void ASnakePawn::OnMoveUp(int value)
 {
-	int i = value > 0.f ? -1 : 1;
-
-	if(PartsPosition.Num() > 1 && Speed.Y + i == 0)
+	if(PartsPosition.Num() > 1 && Speed.Y - value == 0)
 	{
 		return;
 	}
 
-	Move(0, i);
+	Move(0, -value);
 }
 
-void ASnakePawn::OnMoveRight(float value)
+void ASnakePawn::OnMoveRight(int value)
 {
-	int i = value > 0.f ? 1 : -1;
-
-	if(PartsPosition.Num() > 1 && Speed.X + i == 0)
+	if(PartsPosition.Num() > 1 && Speed.X + value == 0)
 	{
 		return;
 	}
 
-	Move(i, 0);
+	Move(value, 0);
 }
