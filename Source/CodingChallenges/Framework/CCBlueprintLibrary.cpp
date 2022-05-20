@@ -26,3 +26,8 @@ FVector2D UCCBlueprintLibrary::GetCameraViewportSize(UObject* worldContext)
 	UWorld* world = GEngine->GetWorldFromContextObject(worldContext, EGetWorldErrorMode::ReturnNull);
 	return UCCUtils::GetCameraViewportSize(world);
 }
+
+FVector UCCBlueprintLibrary::GetLocationFromCoordinates(float x, float y, float width, float height)
+{
+	return UCCUtils::GetLocationFromCoordinates(x, y, width, height);
+}

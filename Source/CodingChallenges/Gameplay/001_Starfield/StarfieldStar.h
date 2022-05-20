@@ -20,8 +20,8 @@ protected:
 	float Y;
 	float Z;
 
-	float HalfWidth;
-	float HalfHeight;
+	float Width;
+	float Height;
 
 	float MinSize;
 	float MaxSize;
@@ -29,7 +29,7 @@ protected:
 public:
 	FStarfieldStar() { }
 
-	FStarfieldStar(float halfWidth, float halfHeight, float minSize, float maxSize, int index);
+	FStarfieldStar(float width, float height, float minSize, float maxSize, int index);
 
 	void Update(float speed, float deltaRatio);
 

@@ -42,3 +42,8 @@ FVector2D UCCUtils::GetCameraViewportSize(UWorld* world)
 
 	return FVector2D(view.OrthoWidth, view.OrthoWidth / view.AspectRatio);
 }
+
+FVector UCCUtils::GetLocationFromCoordinates(float x, float y, float width, float height)
+{
+	return FVector(-100.f, x - width * 0.5f, -y + height * 0.5f);
+}

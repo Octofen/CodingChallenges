@@ -26,4 +26,7 @@ public:
 
 	UFUNCTION(BlueprintPure, meta = (WorldContext = "worldContext"))
 	static FVector2D GetCameraViewportSize(UObject* worldContext);
+
+	UFUNCTION(BlueprintPure)
+	static FVector GetLocationFromCoordinates(float x, float y, float width, float height);
 };

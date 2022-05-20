@@ -27,14 +27,12 @@ void AStarfieldManager::BeginPlay()
 	Data = DataSoft.Get();
 
 	FVector2D viewport = UCCUtils::GetCameraViewportSize(GetWorld());
-	float halfWidth = viewport.X * 0.5f;
-	float halfHeight = viewport.Y * 0.5f;
 
 	for(int i = 0; i < Data->NbStars; i++)
 	{
 		int index = InstancedStaticMesh->AddInstance(FTransform(), true);
 
-		TSharedPtr<FStarfieldStar> star(new FStarfieldStar(halfWidth, halfHeight, Data->MinStarSize, Data->MaxStarSize, index));
+		TSharedPtr<FStarfieldStar> star(new FStarfieldStar(viewport.X, viewport.Y, Data->MinStarSize, Data->MaxStarSize, index));
 		Stars.Add(star);
 	}
 }

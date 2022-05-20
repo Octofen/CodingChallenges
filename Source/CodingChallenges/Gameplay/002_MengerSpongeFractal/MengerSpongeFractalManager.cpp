@@ -4,7 +4,7 @@
 #include "MengerSpongeFractalManager.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "CodingChallenges/Framework/002_Menger_Sponge_Fractal/MengerSpongeFractalPawn.h"
+#include "CodingChallenges/Framework/002_MengerSpongeFractal/MengerSpongeFractalPawn.h"
 #include "CodingChallenges/Data/002_MengerSpongeFractal/MengerSpongeFractalData.h"
 
 AMengerSpongeFractalManager::AMengerSpongeFractalManager()

@@ -15,6 +15,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UStaticMeshComponent* Mesh;
 
+	float X;
+
+	float Width;
+	float Height;
+
 public:
 	ASpaceInvadersShip();
+
+	void Initialize(float width, float height);
 };

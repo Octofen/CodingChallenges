@@ -3,15 +3,16 @@
 
 #include "StarfieldStar.h"
 #include "Kismet/GameplayStatics.h"
+#include "CodingChallenges/Framework/CCUtils.h"
 
-FStarfieldStar::FStarfieldStar(float halfWidth, float halfHeight, float minSize, float maxSize, int index)
+FStarfieldStar::FStarfieldStar(float width, float height, float minSize, float maxSize, int index)
 {
-	this->HalfWidth = halfWidth;
-	this->HalfHeight = halfHeight;
+	this->Width = width;
+	this->Height = height;
 
-	X = FMath::RandRange(-HalfWidth, HalfWidth);
-	Y = FMath::RandRange(-HalfHeight, HalfHeight);
-	Z = FMath::RandRange(0.f, HalfWidth);
+	X = FMath::RandRange(0.f, width);
+	Y = FMath::RandRange(0.f, height);
+	Z = FMath::RandRange(0.f, width * 0.5f);
 
 	this->MinSize = minSize;
 	this->MaxSize = maxSize;
@@ -24,19 +25,20 @@ void FStarfieldStar::Update(float speed, float deltaRatio)
 
 	if(Z < 1.f)
 	{
-		X = FMath::RandRange(-HalfWidth, HalfWidth);
-		Y = FMath::RandRange(-HalfHeight, HalfHeight);
-		Z = HalfWidth;
+		X = FMath::RandRange(0.f, Width);
+		Y = FMath::RandRange(0.f, Height);
+		Z = Width * 0.5f;
 	}
 }
 
 FTransform FStarfieldStar::Show()
 {
-	float sx = FMath::GetMappedRangeValueUnclamped(FVector2D(-1.f, 1.f), FVector2D(-HalfWidth, HalfWidth), X / Z);
-	float sy = FMath::GetMappedRangeValueUnclamped(FVector2D(-1.f, 1.f), FVector2D(-HalfHeight, HalfHeight), Y / Z);
-	float r = FMath::GetMappedRangeValueClamped(FVector2D(0.f, HalfWidth), FVector2D(MaxSize, MinSize), Z);
+	FVector sv = UCCUtils::GetLocationFromCoordinates(X, Y, Width, Height);
+	float sx = FMath::GetMappedRangeValueUnclamped(FVector2D(-1.f, 1.f), FVector2D(-Width * 0.5f, Width * 0.5f), sv.Y / Z);
+	float sy = FMath::GetMappedRangeValueUnclamped(FVector2D(-1.f, 1.f), FVector2D(-Height * 0.5f, Height * 0.5f), sv.Z / Z);
+	float r = FMath::GetMappedRangeValueClamped(FVector2D(0.f, Width * 0.5f), FVector2D(MaxSize, MinSize), Z);
 
-	FVector location = FVector(0.f, sx, sy);
+	FVector location = FVector(-100.f, sx, sy);
 	FVector scale = FVector(r);
 	
 	return FTransform(FRotator::ZeroRotator, location, scale);

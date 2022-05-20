@@ -3,6 +3,7 @@
 
 #include "PurpleRainDrop.h"
 #include "CodingChallenges/Data/004_PurpleRain/PurpleRainData.h"
+#include "CodingChallenges/Framework/CCUtils.h"
 
 FPurpleRainDrop::FPurpleRainDrop(float width, float height, UPurpleRainData* data)
 {
@@ -30,7 +31,7 @@ void FPurpleRainDrop::Fall(float deltaRatio)
 
 FTransform FPurpleRainDrop::Show()
 {
-	FVector location = FVector(-100.f, X - Width * 0.5f, -Y + Height * 0.5f);
+	FVector location = UCCUtils::GetLocationFromCoordinates(X, Y, Width, Height);
 	FVector scale = FVector(Tickness, Tickness, Length) * 0.01f;
 
 	return FTransform(FRotator::ZeroRotator, location, scale);

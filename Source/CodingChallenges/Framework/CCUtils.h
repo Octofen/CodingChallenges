@@ -22,4 +22,6 @@ public:
 	static int AbsoluteModulo(int value, int modulo);
 
 	static FVector2D GetCameraViewportSize(UWorld* world);
+
+	static FVector GetLocationFromCoordinates(float x, float y, float width, float height);
 };
