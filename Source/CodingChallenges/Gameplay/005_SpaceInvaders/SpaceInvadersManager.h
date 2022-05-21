@@ -4,15 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SpaceInvadersFlower.h"
 #include "SpaceInvadersManager.generated.h"
+
+class UInstancedStaticMeshComponent;
 
 UCLASS()
 class CODINGCHALLENGES_API ASpaceInvadersManager : public AActor
 {
 	GENERATED_BODY()
 	
+protected:
+	UPROPERTY(VisibleAnywhere, meta = (Hidden))
+	UInstancedStaticMeshComponent* FlowerMesh;
+
+	TSharedPtr<FSpaceInvadersFlower> Flower;
+
 public:	
 	ASpaceInvadersManager();
 
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
+
+	void Tick(float DeltaSeconds) override;
 };
