@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "SpaceInvadersShip.generated.h"
 
+class USpaceInvadersData;
+
 UCLASS()
 class CODINGCHALLENGES_API ASpaceInvadersShip : public APawn
 {
@@ -21,10 +23,13 @@ protected:
 	float Width;
 	float Height;
 
+	UPROPERTY()
+	USpaceInvadersData* Data;
+
 public:
 	ASpaceInvadersShip();
 
-	void Initialize(float width, float height);
+	void Initialize(float width, float height, USpaceInvadersData* data);
 
 protected:
 	UFUNCTION()

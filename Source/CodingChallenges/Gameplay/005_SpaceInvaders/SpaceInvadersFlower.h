@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "SpaceInvadersFlower.generated.h"
 
+class USpaceInvadersData;
+
 USTRUCT()
 struct FSpaceInvadersFlower
 {
@@ -17,10 +19,13 @@ protected:
 	float Width;
 	float Height;
 
+	UPROPERTY()
+	USpaceInvadersData* Data;
+
 public:
 	FSpaceInvadersFlower() { };
 
-	FSpaceInvadersFlower(float x, float y, float width, float height);
+	FSpaceInvadersFlower(float x, float y, float width, float height, USpaceInvadersData* data);
 
 	FTransform Show();
 };

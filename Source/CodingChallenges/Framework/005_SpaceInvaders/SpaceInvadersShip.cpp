@@ -5,6 +5,7 @@
 #include "CodingChallenges/Framework/CCUtils.h"
 #include "Kismet/GameplayStatics.h"
 #include "CodingChallenges/Framework/MainPlayerController.h"
+#include "CodingChallenges/Data/005_SpaceInvaders/SpaceInvadersData.h"
 
 ASpaceInvadersShip::ASpaceInvadersShip()
 {
@@ -14,12 +15,13 @@ ASpaceInvadersShip::ASpaceInvadersShip()
 	RootComponent = Mesh;
 }
 
-void ASpaceInvadersShip::Initialize(float width, float height)
+void ASpaceInvadersShip::Initialize(float width, float height, USpaceInvadersData* data)
 {
 	this->Width = width;
 	this->Height = height;
+	this->Data = data;
 
-	FVector scale = FVector(0.2f, 0.2f, 0.6f);
+	FVector scale = data->ShipScale;
 	X = width * 0.5f;
 	Y = height - (scale.Z * 50.f);
 
@@ -37,7 +39,7 @@ void ASpaceInvadersShip::Initialize(float width, float height)
 
 void ASpaceInvadersShip::OnMove(int value)
 {
-	X += value * 5.f;
+	X += value * Data->ShipSpeed;
 
 	FVector location = UCCUtils::GetLocationFromCoordinates(X, Y, Width, Height);
 	SetActorLocation(location);

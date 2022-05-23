@@ -8,6 +8,7 @@
 #include "SpaceInvadersManager.generated.h"
 
 class UInstancedStaticMeshComponent;
+class USpaceInvadersData;
 
 UCLASS()
 class CODINGCHALLENGES_API ASpaceInvadersManager : public AActor
@@ -17,6 +18,12 @@ class CODINGCHALLENGES_API ASpaceInvadersManager : public AActor
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UInstancedStaticMeshComponent* FlowerMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	TSoftObjectPtr<USpaceInvadersData> DataSoft;
+
+	UPROPERTY()
+	USpaceInvadersData* Data;
 
 	TArray<TSharedPtr<FSpaceInvadersFlower>> Flowers;
 
