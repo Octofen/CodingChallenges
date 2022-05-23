@@ -27,13 +27,25 @@ void ASpaceInvadersManager::BeginPlay()
 		ship->Initialize(viewport.X, viewport.Y);
 	}
 
-	Flower = TSharedPtr<FSpaceInvadersFlower>(new FSpaceInvadersFlower(viewport.X, viewport.Y));
-	FlowerMesh->AddInstance(Flower->Show(), true);
+	for(int i = 0; i < 6; i++)
+	{
+		float x = i * 80.f + 80.f;
+		float y = 60.f;
+		TSharedPtr<FSpaceInvadersFlower> flower = TSharedPtr<FSpaceInvadersFlower>(new FSpaceInvadersFlower(x, y, viewport.X, viewport.Y));
+		Flowers.Add(flower);
+		FlowerMesh->AddInstance(flower->Show(), true);
+	}
 }
 
 void ASpaceInvadersManager::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	FlowerMesh->UpdateInstanceTransform(0, Flower->Show(), true, true);
+	for(int i = 0; i < Flowers.Num(); i++)
+	{
+		TSharedPtr<FSpaceInvadersFlower> flower = Flowers[i];
+		FlowerMesh->UpdateInstanceTransform(i, flower->Show(), true);
+	}
+
+	FlowerMesh->MarkRenderStateDirty();
 }

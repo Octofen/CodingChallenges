@@ -18,7 +18,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UInstancedStaticMeshComponent* FlowerMesh;
 
-	TSharedPtr<FSpaceInvadersFlower> Flower;
+	TArray<TSharedPtr<FSpaceInvadersFlower>> Flowers;
 
 public:	
 	ASpaceInvadersManager();

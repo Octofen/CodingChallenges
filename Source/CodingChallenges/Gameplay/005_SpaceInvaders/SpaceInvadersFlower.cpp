@@ -4,13 +4,13 @@
 #include "SpaceInvadersFlower.h"
 #include "CodingChallenges/Framework/CCUtils.h"
 
-FSpaceInvadersFlower::FSpaceInvadersFlower(float width, float height)
+FSpaceInvadersFlower::FSpaceInvadersFlower(float x, float y, float width, float height)
 {
 	this->Width = width;
 	this->Height = height;
 
-	X = width * 0.5f;
-	Y = 50.f;
+	this->X = x;;
+	this->Y = y;
 }
 
 FTransform FSpaceInvadersFlower::Show()

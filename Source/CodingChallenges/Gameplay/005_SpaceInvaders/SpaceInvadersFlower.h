@@ -20,7 +20,7 @@ protected:
 public:
 	FSpaceInvadersFlower() { };
 
-	FSpaceInvadersFlower(float width, float height);
+	FSpaceInvadersFlower(float x, float y, float width, float height);
 
 	FTransform Show();
 };
